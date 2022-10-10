@@ -34,6 +34,7 @@ import com.clj.fastble.exception.OtherException;
 import com.clj.fastble.scan.BleScanRuleConfig;
 import com.clj.fastble.scan.BleScanner;
 import com.clj.fastble.utils.BleLog;
+import com.clj.fastble.BluetoothGattQueued;
 
 import java.util.List;
 import java.util.UUID;
@@ -338,7 +339,7 @@ public class BleManager {
      * @param bleGattCallback
      * @return
      */
-    public BluetoothGatt connect(BleDevice bleDevice, BleGattCallback bleGattCallback) {
+    public BluetoothGattQueued connect(BleDevice bleDevice, BleGattCallback bleGattCallback) {
         if (bleGattCallback == null) {
             throw new IllegalArgumentException("BleGattCallback can not be Null!");
         }
@@ -371,7 +372,7 @@ public class BleManager {
      * @param bleGattCallback
      * @return
      */
-    public BluetoothGatt connect(String mac, BleGattCallback bleGattCallback) {
+    public BluetoothGattQueued connect(String mac, BleGattCallback bleGattCallback) {
         BluetoothDevice bluetoothDevice = getBluetoothAdapter().getRemoteDevice(mac);
         BleDevice bleDevice = new BleDevice(bluetoothDevice, 0, null, 0);
         return connect(bleDevice, bleGattCallback);
@@ -809,6 +810,13 @@ public class BleManager {
         BleBluetooth bleBluetooth = getBleBluetooth(bleDevice);
         if (bleBluetooth != null)
             return bleBluetooth.getBluetoothGatt();
+        return null;
+    }
+
+    public BluetoothGattQueued getBluetoothGattQueued(BleDevice bleDevice) {
+        BleBluetooth bleBluetooth = getBleBluetooth(bleDevice);
+        if (bleBluetooth != null)
+            return bleBluetooth.getBluetoothGattQueued();
         return null;
     }
 
